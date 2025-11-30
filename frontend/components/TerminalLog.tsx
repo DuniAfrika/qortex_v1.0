@@ -15,7 +15,7 @@ export const TerminalLog: React.FC<TerminalLogProps> = ({ logs }) => {
   return (
     <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 font-mono text-xs h-64 overflow-y-auto shadow-inner">
       <div className="text-slate-500 mb-2 border-b border-slate-800 pb-1 sticky top-0 bg-slate-900">
-        > SYSTEM_LOGS --tail -f
+        &gt; SYSTEM_LOGS --tail -f
       </div>
       <div className="space-y-1">
         {logs.map((log, idx) => (
