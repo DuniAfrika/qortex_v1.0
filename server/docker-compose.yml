@@ -9,6 +9,12 @@ services:
       - PORT=3000
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/qortex
       - REDIS_URL=redis://redis:6379
+      - API_KEY_SECRET=local-api-key-secret
+      - MINER_SHARED_SECRET=local-miner-secret
+      - DISPATCH_REPLICAS=5
+      - RESULT_TIMEOUT_MS=30000
+      - QUORUM_CHECK_INTERVAL_MS=5000
+      - MAX_TWEETS_PER_TASK=5
     volumes:
       - ./src:/app/src
       - ./tsconfig.json:/app/tsconfig.json

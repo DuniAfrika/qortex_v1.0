@@ -72,6 +72,7 @@ model Microtask {
   index       Int
   input       Json
   status      MicrotaskStatus @default(pending)
+  expectedResponses Int        @default(0)
   assignedAt  DateTime?
   completedAt DateTime?
   results     Result[]

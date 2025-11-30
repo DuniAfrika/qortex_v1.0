@@ -30,4 +30,8 @@ export const env = {
     'local-miner-secret',
     'MINER_SHARED_SECRET'
   ),
+  dispatchReplicaCount: number(process.env.DISPATCH_REPLICAS, 5),
+  resultTimeoutMs: number(process.env.RESULT_TIMEOUT_MS, 1000 * 30),
+  quorumCheckIntervalMs: number(process.env.QUORUM_CHECK_INTERVAL_MS, 1000 * 5),
+  maxTweetsPerTask: number(process.env.MAX_TWEETS_PER_TASK, 5),
 };

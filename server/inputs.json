@@ -1,0 +1,4 @@
+{
+    "type": "sentiment",
+    "inputs": ["I love my teacher", "I hate dogs", "This is a great place", "T'was a great party", "You are a fool"]
+}
