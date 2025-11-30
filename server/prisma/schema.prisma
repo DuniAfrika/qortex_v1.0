@@ -1,0 +1,137 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TaskType {
+  sentiment
+  toxicity
+}
+
+enum TaskStatus {
+  queued
+  dispatched
+  verifying
+  completed
+  failed
+}
+
+enum MicrotaskStatus {
+  pending
+  assigned
+  completed
+  failed
+}
+
+enum MinerStatus {
+  online
+  offline
+  banned
+}
+
+enum PaymentStatus {
+  pending
+  paid
+  failed
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String?
+  email     String?  @unique
+  apiKey    String?
+  createdAt DateTime @default(now())
+  tasks     Task[]
+}
+
+model Task {
+  id              String          @id @default(uuid())
+  ownerId         String?
+  owner           User?           @relation(fields: [ownerId], references: [id])
+  type            TaskType
+  input           Json
+  microtaskCount  Int
+  requiredQuorum  Float           @default(0.6)
+  status          TaskStatus      @default(queued)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  microtasks      Microtask[]
+  quorums         Quorum[]
+  proofReports    ProofReport?
+  payments        Payment[]
+}
+
+model Microtask {
+  id          String          @id @default(uuid())
+  taskId      String
+  task        Task            @relation(fields: [taskId], references: [id])
+  index       Int
+  input       Json
+  status      MicrotaskStatus @default(pending)
+  assignedAt  DateTime?
+  completedAt DateTime?
+  results     Result[]
+  quorum      Quorum?
+
+  @@unique([taskId, index])
+}
+
+model Miner {
+  id               String       @id @default(uuid())
+  nodeId           String       @unique
+  address          String?
+  status           MinerStatus  @default(online)
+  reliabilityScore Float        @default(1)
+  lastSeenAt       DateTime?
+  results          Result[]
+  payments         Payment[]
+}
+
+model Result {
+  id           String    @id @default(uuid())
+  microtaskId  String
+  microtask    Microtask @relation(fields: [microtaskId], references: [id])
+  minerId      String
+  miner        Miner     @relation(fields: [minerId], references: [id])
+  output       Json
+  signedHash   String
+  receivedAt   DateTime  @default(now())
+
+  @@unique([microtaskId, minerId])
+}
+
+model Quorum {
+  id            String     @id @default(uuid())
+  taskId        String
+  task          Task       @relation(fields: [taskId], references: [id])
+  microtaskId   String     @unique
+  microtask     Microtask  @relation(fields: [microtaskId], references: [id])
+  decision      Json
+  finalizedAt   DateTime   @default(now())
+}
+
+model ProofReport {
+  id          String   @id @default(uuid())
+  taskId      String   @unique
+  task        Task     @relation(fields: [taskId], references: [id])
+  reportHash  String
+  reportJson  Json
+  signedBy    String?
+  createdAt   DateTime @default(now())
+}
+
+model Payment {
+  id         String        @id @default(uuid())
+  taskId     String
+  task       Task          @relation(fields: [taskId], references: [id])
+  minerId    String
+  miner      Miner         @relation(fields: [minerId], references: [id])
+  amount     Decimal       @db.Decimal(18, 8)
+  status     PaymentStatus @default(pending)
+  txReference String?
+  createdAt  DateTime      @default(now())
+}
