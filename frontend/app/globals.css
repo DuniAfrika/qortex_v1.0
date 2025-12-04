@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+:root {
+  --background: #1e1e2e;
+  --foreground: #fff3e0;
+
+  /* Qubic Colors */
+  --qubic-lime: #a3ff46;
+  --qubic-purple: #9d4edd;
+  --qubic-charcoal: #1e1e2e;
+  --qubic-charcoal-light: #2d2d44;
+  --qubic-cream: #fff3e0;
+  --qubic-neon: #00f0ff;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-qubic-lime: var(--qubic-lime);
+  --color-qubic-purple: var(--qubic-purple);
+  --color-qubic-charcoal: var(--qubic-charcoal);
+  --color-qubic-charcoal-light: var(--qubic-charcoal-light);
+  --color-qubic-cream: var(--qubic-cream);
+  --color-qubic-neon: var(--qubic-neon);
+
+  --font-francy: var(--font-francy);
+  --font-glacial: var(--font-glacial);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-glacial);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-francy);
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Global Scrollbar Hiding */
+* {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
