@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Cpu, Shield, Zap, Globe, Activity, CheckCircle2, ChevronRight } from 'lucide-react';
+import { ArrowRight, Cpu, Globe, Activity, CheckCircle2, ChevronRight } from 'lucide-react';
 import RippleGrid from './RippleGrid';
-import { CardStack } from './CardStack';
+import DotGrid from './DotGrid';
+import { FeatureCards } from './FeatureCards';
 
 const Counter = ({ end, duration = 2500, suffix = "", decimals = 0, separator = false, className = "" }: { end: number, duration?: number, suffix?: string, decimals?: number, separator?: boolean, className?: string }) => {
   const [count, setCount] = useState(0);
@@ -72,16 +73,29 @@ export const LandingPage: React.FC = () => {
 
       {/* Hero Section */}
       <section className="relative z-10 pt-20 pb-32 text-center px-6 overflow-hidden">
-        {/* Ripple Grid Background - Localized to Hero */}
-        <div className="absolute inset-0 z-0 pointer-events-none">
-             <RippleGrid 
-              gridColor="#22d3ee"
-              opacity={0.4}
-              rippleIntensity={0.05}
-              gridSize={5}
-              gridThickness={8}
-              glowIntensity={0.2}
-            />
+        {/* Layered hero-only background */}
+        <div className="absolute inset-0 z-0">
+          <RippleGrid 
+            gridColor="#22d3ee"
+            opacity={0.35}
+            rippleIntensity={0.05}
+            gridSize={5}
+            gridThickness={8}
+            glowIntensity={0.2}
+          />
+          <DotGrid
+            className="absolute inset-0 pointer-events-none"
+            dotSize={8}
+            gap={18}
+            baseColor="#0f172a"
+            activeColor="#22d3ee"
+            proximity={160}
+            shockRadius={250}
+            shockStrength={6}
+            resistance={900}
+            returnDuration={1.2}
+            style={{ opacity: 0.55 }}
+          />
         </div>
 
         <div className="relative z-10">
@@ -139,35 +153,7 @@ export const LandingPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Feature Stack */}
-      <section id="features" className="bg-slate-950 relative z-10">
-        <div className="max-w-7xl mx-auto px-6 py-24">
-            <div className="mb-12 text-center">
-                <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">The Trustless Compute Layer</h2>
-                <p className="text-slate-400 max-w-2xl mx-auto text-lg">
-                    Traditional AI is a black box. Qortex opens it up by distributing verification across thousands of independent observers.
-                </p>
-            </div>
-
-            <CardStack items={[
-                {
-                    icon: Shield,
-                    title: "Censorship Resistant",
-                    description: "No single entity controls the output. Distributed consensus ensures that models run exactly as intended, without hidden filters or biases injected by centralized providers."
-                },
-                {
-                    icon: Zap,
-                    title: "Verifiable Speed",
-                    description: "Optimized for low-latency inference. Our proof-of-compute mechanism verifies results in milliseconds, enabling real-time applications that require both speed and trust."
-                },
-                {
-                    icon: Globe,
-                    title: "Global Distribution",
-                    description: "Nodes across 40+ countries. Geographic diversity prevents localized outages and regulatory capture, creating a truly resilient intelligence network."
-                }
-            ]} />
-        </div>
-      </section>
+      <FeatureCards />
 
       {/* How it Works */}
       <section className="py-24 bg-slate-900/30 border-t border-slate-900 px-6 relative z-10">
